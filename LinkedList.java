@@ -4,6 +4,7 @@
 	@author Will Long
 */
 import java.util.Iterator; 
+import java.util.NoSuchElementException;
 public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 {
 	/**head pointer*/
@@ -42,17 +43,13 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public LinkedList(LinkedList<E> other)
 	{
-		this();
+		this(); //calls default constructor in case other is empty
 		if(other.isEmpty() == false)
 		{
-			head = other.head;
-			ListNode<E> h = other.head;
-			for(ListNode<E> curr = h; curr.getNext() != null; curr = curr.getNext())
+			for(int i = 0; i < other.size(); i++)
 			{
-				curr.setNext(curr.getNext());
-				h = curr;
+				add(other.get(i));
 			}
-			tail = h;
 			size = other.size();
 		}
 	}
@@ -90,16 +87,15 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public void offer(E item)
 	{
-		addFirst(item);
+		addLast(item);
 	}
-	
-	//public void offer(E item)
 	
 	/**
 	removes an inputted item from the linked list
 	@param item item that is going to be removed
 	@return boolean returns true if item was removed successfully, false if not
 	*/
+	@SuppressWarnings("unchecked")
 	public boolean remove(E item)
 	{
 		//called indexOf so I could then call the other remove method
@@ -117,10 +113,11 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	@param index index that is going to be removed
 	@return E item that was removed
 	*/
+	@SuppressWarnings("unchecked")
 	public E remove(int index)
 	{
 		if((index >= size) || (index < 0))
-			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to remove an item at spot: " + index); 
+			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to remove an item at index: " + index); 
 		//checks if index was first or last spot in linked list to see if removeFirst or removeLast could be called
 		if(index == 0)
 			return removeFirst();
@@ -148,6 +145,8 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public E removeFirst()
 	{
+		if(isEmpty())
+			throw new NoSuchElementException("cannot remove an item from an empty linked list");
 		ListNode<E> temp = head;
 		head = head.getNext();
 		size--;
@@ -160,6 +159,8 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public E removeLast()
 	{
+		if(isEmpty())
+			throw new NoSuchElementException("cannot remove an item from an empty linked list");
 		//looks for the spot before tail and sets it to tail and sets its pointer to null 
 		ListNode<E> temp = tail;		
 		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
@@ -223,6 +224,7 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	public void clear()
 	{
 		head = tail = null;
+		size = 0;
 	}
 	
 	/**
@@ -233,9 +235,9 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	public E get(int i)
 	{
 	if((i >= size) || (i < 0))
-		throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to get an item at spot: " + i);
+		throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to get an item at index: " + i);
 		int count = 0;
-		for(ListNode<E> curr = head; count < size; curr = curr.getNext())
+		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 		{
 			if(count == i)
 				return curr.getItem();
@@ -253,15 +255,15 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	public E set(int index, E o)
 	{
 		if((index >= size) || (index < 0))
-			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to set an item to spot: " + index);
+			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to set an item to index: " + index);
 		int count = 0;
-		for(ListNode<E> curr = head; count < size; curr = curr.getNext())
+		for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 		{
 			if(count == index)
 			{
-				ListNode<E> temp = curr;
+				E temp = curr.getItem();
 				curr.setItem(o);
-				return temp.getItem();
+				return temp;
 			}
 			count++;
 		}
@@ -278,7 +280,7 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 		int count = 0;
 		if(o == null)
 		{
-			for(ListNode<E> curr = head; count < size; curr = curr.getNext())
+			for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 			{
 				if(curr.getItem() == null)
 					return count;
@@ -287,7 +289,7 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 		}
 		else
 		{
-			for(ListNode<E> curr = head; count < size; curr = curr.getNext())
+			for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 			{
 				if(curr.getItem().equals(o))
 					return count;
@@ -305,7 +307,7 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	public void add(int index, E item)
 	{
 		if((index > size) || (index < 0))
-			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to add an item to spot: " + index);
+			throw new IndexOutOfBoundsException("size of linked list is: " + size + ", tried to add an item at index: " + index);
 		//checks if the index is the first or last spot in the linked list
 		if(index == 0)
 			addFirst(item);
@@ -318,7 +320,7 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 			//finds the spot before index and sets that listNodes pointer to the inputted item, the inputted item pointer is set to the next listNode
 			int count = 0;
 			ListNode<E> toAdd = new ListNode<E>(item);
-			for(ListNode<E> curr = head; count < size; curr = curr.getNext())
+			for(ListNode<E> curr = head; curr != null; curr = curr.getNext())
 			{
 				if(count == index - 1)
 				{
@@ -357,6 +359,8 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public E peek()
 	{
+		if(head == null)
+			return null;
 		return head.getItem();	
 	}
 	
@@ -391,6 +395,6 @@ public class LinkedList<E> implements Iterable<E>, Stack<E>, Queue<E>
 	*/
 	public Iterator<E> iterator()
 	{
-		return new LinkedListIterator(head);
+		return new LinkedListIterator<E>(head);
 	}
 }
