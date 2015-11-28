@@ -3,7 +3,6 @@ public class LinkedListRunner
 {
 	public static void main(String [] args)
 	{
-		/*
 		LinkedList<String> l = new LinkedList<String>();
 		l.add("zero");
 		l.add(1, "two");
@@ -54,64 +53,7 @@ public class LinkedListRunner
 		LinkedList<String> l3 = new LinkedList<String>(l1);
 		System.out.println(l1);
 		System.out.println(l3);
-		*/
-		LinkedList<String> v = new LinkedList<String>();
-		v.add("1st");
-		v.add("2nd");
-		v.add(null);
-		v.add("4th");
-		v.add("5th");
-		v.add(2,"6th");
-		v.add(5,"7th");
-		System.out.println(v);
-		System.out.println("IndexOfNullThere " + v.indexOf(null));
-		System.out.println(v);
-		System.out.println("Get: " + v.get(3));
-		System.out.println(v);	
-		System.out.println("RemoveIndex: " + v.remove(3));
-		System.out.println(v);
-		System.out.println("RemoveValue: " + v.remove("1st"));
-		System.out.println(v);
-		System.out.println("IndexOfNullNotThere " + v.indexOf(null));
-		System.out.println(v);
-		System.out.println("Set: " + v.set(1, "New"));
-		System.out.println(v);
-		System.out.println("ContainsNo: " + v.contains("3rd"));
-		System.out.println(v);
-		System.out.println("ContainsYes: " + v.contains("2nd"));
-		System.out.println(v);
-		System.out.println("isEmptyNo: " + v.isEmpty());
-		System.out.println(v);
-		System.out.println("clear: ");
-		v.clear();
-		//v.removeFirst();
-		System.out.println(v);
-		System.out.println("isEmptyYes: " + v.isEmpty());
-		System.out.println(v);
-		v.add("1st");
-		System.out.println("Another 1: ");
-		System.out.println(v);
-		v.add("2nd");
-		System.out.println("Another 2: ");
-		System.out.println(v);
-		LinkedList<String> s = new LinkedList<String>(v);
-		System.out.println("S:");
-		System.out.println(s);
-		System.out.println("V:");
-		System.out.println(v);
-		s.add("3rd");
-		System.out.println("S after adding a third:");
-		System.out.println(s);
-		System.out.println(" The same V:");
-		System.out.println(v);
-		System.out.println("-----------------");
-
 		Queue<String> q = new LinkedList<String>();
-		q.offer("1st");
-		q.offer("2nd");
-		q.offer("3rd");
-		q.offer("4th");
-		System.out.println("Poll: " + q.poll());
-		System.out.println(q);	
+		Stack<String> stack = new LinkedList<String>();
 	}
 }
